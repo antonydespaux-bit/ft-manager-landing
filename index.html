@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FT Manager — Fiches Techniques Professionnelles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --nav: #18181B;
+    --accent: #6366F1;
+    --accent-light: #EEF2FF;
+    --bg: #FAFAFA;
+    --bg2: #F4F4F5;
+    --border: #E4E4E7;
+    --text: #18181B;
+    --muted: #71717A;
+    --white: #FFFFFF;
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --red: #DC2626;
+    --red-light: #FEE2E2;
+    --amber: #D97706;
+    --amber-light: #FEF3C7;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(24,24,27,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    padding: 0 40px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .nav-logo-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500; font-size: 15px;
+    color: white; letter-spacing: 0.3px;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-link {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none; font-size: 13px;
+    padding: 7px 14px; border-radius: 8px;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: white; background: rgba(255,255,255,0.06); }
+  .nav-cta {
+    background: var(--accent); color: white;
+    text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 8px 18px; border-radius: 8px;
+    transition: all 0.2s;
+    margin-left: 8px;
+  }
+  .nav-cta:hover { background: #4F46E5; transform: translateY(-1px); }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    display: flex; align-items: center; gap: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 4px;
+    margin-left: 8px;
+  }
+  .lang-btn {
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.45); font-size: 12px;
+    padding: 4px 8px; border-radius: 6px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: rgba(255,255,255,0.12); color: white;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 160px 40px 100px;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-light);
+    color: var(--accent); font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: 20px;
+    margin-bottom: 28px; letter-spacing: 0.5px;
+  }
+  .hero-eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700; line-height: 1.15;
+    color: var(--text); margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 em {
+    font-style: italic; color: var(--accent);
+  }
+  .hero-desc {
+    font-size: 17px; color: var(--muted);
+    line-height: 1.7; margin-bottom: 40px;
+    max-width: 440px;
+  }
+  .hero-actions {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--nav); color: white;
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    padding: 13px 28px; border-radius: 10px;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { background: #27272A; transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--muted); font-size: 14px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    padding: 13px 0; transition: color 0.15s;
+  }
+  .btn-secondary:hover { color: var(--text); }
+  .btn-arrow { font-size: 18px; transition: transform 0.2s; }
+  .btn-secondary:hover .btn-arrow { transform: translateX(4px); }
+
+  /* Dashboard mockup */
+  .hero-visual {
+    position: relative;
+  }
+  .dashboard-mock {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.04);
+    transform: perspective(1200px) rotateY(-4deg) rotateX(2deg);
+    transition: transform 0.4s ease;
+  }
+  .dashboard-mock:hover {
+    transform: perspective(1200px) rotateY(-1deg) rotateX(0deg);
+  }
+  .mock-nav {
+    background: var(--nav);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mock-dots { display: flex; gap: 5px; }
+  .mock-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .mock-dot.r { background: #FF5F57; }
+  .mock-dot.y { background: #FFBD2E; }
+  .mock-dot.g { background: #28C840; }
+  .mock-nav-logo {
+    margin-left: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; color: white;
+    letter-spacing: 0.3px;
+  }
+  .mock-body { padding: 20px; background: var(--bg2); }
+  .mock-kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin-bottom: 16px;
+  }
+  .mock-kpi {
+    background: white; border-radius: 10px;
+    padding: 14px; border: 0.5px solid var(--border);
+  }
+  .mock-kpi.green { background: var(--green-light); border-color: #BBF7D0; }
+  .mock-kpi.red { background: var(--red-light); border-color: #FECACA; }
+  .mock-kpi.amber { background: var(--amber-light); border-color: #FDE68A; }
+  .mock-kpi-label {
+    font-size: 9px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px; color: var(--muted);
+  }
+  .mock-kpi.green .mock-kpi-label { color: #166534; }
+  .mock-kpi.red .mock-kpi-label { color: #991B1B; }
+  .mock-kpi.amber .mock-kpi-label { color: #92400E; }
+  .mock-kpi-value {
+    font-size: 20px; font-weight: 500; color: var(--text);
+  }
+  .mock-kpi.green .mock-kpi-value { color: var(--green); }
+  .mock-kpi.red .mock-kpi-value { color: var(--red); }
+  .mock-kpi.amber .mock-kpi-value { color: var(--amber); }
+  .mock-table {
+    background: white; border-radius: 10px;
+    border: 0.5px solid var(--border); overflow: hidden;
+  }
+  .mock-table-header {
+    padding: 12px 14px;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    display: flex; justify-content: space-between;
+  }
+  .mock-row {
+    padding: 10px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 11px;
+  }
+  .mock-row:last-child { border-bottom: none; }
+  .mock-badge {
+    font-size: 10px; font-weight: 500;
+    padding: 2px 8px; border-radius: 20px;
+  }
+  .mock-badge.red { background: var(--red-light); color: var(--red); }
+  .mock-badge.green { background: var(--green-light); color: var(--green); }
+
+  /* Floating badges */
+  .badge-float {
+    position: absolute;
+    background: white; border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 10px 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .badge-float.top-right {
+    top: -16px; right: -20px;
+    animation-delay: 0s;
+  }
+  .badge-float.bottom-left {
+    bottom: 20px; left: -24px;
+    animation-delay: 1.5s;
+  }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: var(--nav);
+    padding: 40px;
+    margin: 0;
+  }
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; font-weight: 700;
+    color: white; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-number span { color: var(--accent); }
+  .stat-label { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+  /* ── FEATURES ── */
+  .features {
+    padding: 100px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 700; line-height: 1.2;
+    margin-bottom: 16px; letter-spacing: -0.3px;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-desc {
+    font-size: 16px; color: var(--muted);
+    max-width: 500px; line-height: 1.7; margin-bottom: 64px;
+  }
+
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .feature-card {
+    background: white; border: 0.5px solid var(--border);
+    border-radius: 16px; padding: 32px;
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent); opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(99,102,241,0.08);
+    border-color: rgba(99,102,241,0.2);
+  }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 20px;
+  }
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 12px; line-height: 1.3;
+  }
+  .feature-desc {
+    font-size: 14px; color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── FEATURE HIGHLIGHT ── */
+  .highlight {
+    background: var(--bg2);
+    padding: 100px 40px;
+  }
+  .highlight-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .highlight-content .section-title { margin-bottom: 20px; }
+  .highlight-list {
+    list-style: none; margin: 32px 0 40px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .highlight-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: var(--muted); line-height: 1.5;
+  }
+  .highlight-list .check {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px; font-size: 11px;
+  }
+  .foodcost-visual {
+    background: white; border: 0.5px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+  .fc-title {
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px;
+  }
+  .fc-rows { display: flex; flex-direction: column; gap: 12px; }
+  .fc-row { display: flex; align-items: center; gap: 12px; }
+  .fc-name { font-size: 13px; font-weight: 500; flex: 1; }
+  .fc-bar-wrap {
+    flex: 2; height: 6px; background: var(--bg2);
+    border-radius: 20px; overflow: hidden;
+  }
+  .fc-bar {
+    height: 100%; border-radius: 20px;
+    transition: width 1s ease;
+  }
+  .fc-bar.green { background: var(--green); }
+  .fc-bar.amber { background: var(--amber); }
+  .fc-bar.red { background: var(--red); }
+  .fc-pct {
+    font-size: 13px; font-weight: 500; min-width: 44px; text-align: right;
+  }
+  .fc-pct.green { color: var(--green); }
+  .fc-pct.amber { color: var(--amber); }
+  .fc-pct.red { color: var(--red); }
+  .fc-footer {
+    margin-top: 24px; padding-top: 20px;
+    border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .fc-avg-label { font-size: 12px; color: var(--muted); }
+  .fc-avg-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--green);
+  }
+
+  /* ── MULTI ETAB ── */
+  .multi-section {
+    padding: 100px 40px;
+    max-width: 1200px; margin: 0 auto;
+    text-align: center;
+  }
+  .multi-section .section-desc { margin: 0 auto 64px; }
+  .clients-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .client-card {
+    background: white; border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 28px;
+    text-align: left; transition: all 0.2s;
+  }
+  .client-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.07);
+  }
+  .client-badge {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .client-badge.cuisine { background: #FEF3C7; color: #92400E; }
+  .client-badge.bar { background: var(--accent-light); color: var(--accent); }
+  .client-badge.both { background: var(--green-light); color: #166534; }
+  .client-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; margin-bottom: 6px;
+  }
+  .client-detail { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .client-stats {
+    display: flex; gap: 16px;
+  }
+  .client-stat { font-size: 12px; color: var(--muted); }
+  .client-stat strong { color: var(--text); font-weight: 500; }
+
+  /* ── ALLERGENES ── */
+  .allergenes-section {
+    background: var(--nav); padding: 100px 40px;
+  }
+  .allergenes-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .allergenes-inner .section-title { color: white; }
+  .allergenes-inner .section-desc { color: rgba(255,255,255,0.5); }
+  .allergenes-inner .section-label { color: rgba(99,102,241,0.8); }
+  .allergene-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .allergene-chip {
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 12px 8px;
+    text-align: center; font-size: 11px;
+    color: rgba(255,255,255,0.6); transition: all 0.2s;
+    cursor: default;
+  }
+  .allergene-chip:hover {
+    background: rgba(99,102,241,0.15);
+    border-color: rgba(99,102,241,0.3);
+    color: white;
+  }
+  .allergene-chip .emoji { font-size: 20px; display: block; margin-bottom: 6px; }
+  .allergene-chip.active {
+    background: rgba(99,102,241,0.2);
+    border-color: rgba(99,102,241,0.4);
+    color: white;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    padding: 120px 40px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(99,102,241,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section .section-title {
+    max-width: 600px; margin: 0 auto 20px;
+  }
+  .cta-section .section-desc {
+    max-width: 440px; margin: 0 auto 48px;
+  }
+  .cta-actions {
+    display: flex; align-items: center; gap: 16px;
+    justify-content: center; flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--nav); padding: 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .footer-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .footer-name { font-size: 14px; color: white; font-weight: 500; }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-link {
+    font-size: 13px; color: rgba(255,255,255,0.4);
+    text-decoration: none; transition: color 0.15s;
+  }
+  .footer-link:hover { color: rgba(255,255,255,0.8); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; gap: 48px; padding: 120px 20px 60px; }
+    .dashboard-mock { transform: none; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .features { padding: 60px 20px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .highlight { padding: 60px 20px; }
+    .highlight-inner { grid-template-columns: 1fr; gap: 40px; }
+    .multi-section { padding: 60px 20px; }
+    .clients-grid { grid-template-columns: 1fr; }
+    .allergenes-section { padding: 60px 20px; }
+    .allergenes-inner { grid-template-columns: 1fr; gap: 40px; }
+    .cta-section { padding: 80px 20px; }
+    footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🍽️</div>
+    <span class="nav-logo-text">FT Manager</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:4px;">
+    <div class="nav-links">
+      <a href="#features" class="nav-link" data-fr="Fonctionnalités" data-en="Features">Fonctionnalités</a>
+      <a href="#foodcost" class="nav-link" data-fr="Food cost" data-en="Food cost">Food cost</a>
+      <a href="#multi" class="nav-link" data-fr="Multi-établissements" data-en="Multi-venue">Multi-établissements</a>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="https://ft-manager-five.vercel.app" class="nav-cta" data-fr="Se connecter" data-en="Sign in">Se connecter</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      <span data-fr="Gestion professionnelle" data-en="Professional management">Gestion professionnelle</span>
+    </div>
+    <h1 data-fr="Les fiches techniques qui <em>font la différence</em>" data-en="Recipe sheets that <em>make the difference</em>">
+      Les fiches techniques qui <em>font la différence</em>
+    </h1>
+    <p class="hero-desc" data-fr="Calculez votre food cost en temps réel, gérez vos allergènes, et pilotez vos marges sur Cuisine et Bar depuis une seule plateforme." data-en="Calculate your food cost in real time, manage allergens, and control your margins across Kitchen and Bar from a single platform.">
+      Calculez votre food cost en temps réel, gérez vos allergènes, et pilotez vos marges sur Cuisine et Bar depuis une seule plateforme.
+    </p>
+    <div class="hero-actions">
+      <a href="https://ft-manager-five.vercel.app" class="btn-primary">
+        <span data-fr="Accéder à l'application" data-en="Access the app">Accéder à l'application</span>
+        <span>→</span>
+      </a>
+      <a href="#features" class="btn-secondary">
+        <span data-fr="Découvrir les fonctionnalités" data-en="Discover features">Découvrir les fonctionnalités</span>
+        <span class="btn-arrow">↓</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="badge-float top-right">
+      <span style="color:#16A34A;font-size:16px;">↑</span>
+      <span style="font-size:11px;color:#71717A;" data-fr="Food cost calculé" data-en="Food cost calculated">Food cost calculé</span>
+      <strong style="font-size:13px;color:#16A34A;">24.3%</strong>
+    </div>
+    <div class="dashboard-mock">
+      <div class="mock-nav">
+        <div class="mock-dots">
+          <div class="mock-dot r"></div>
+          <div class="mock-dot y"></div>
+          <div class="mock-dot g"></div>
+        </div>
+        <span class="mock-nav-logo">FT Manager — Dashboard Cuisine</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-kpis">
+          <div class="mock-kpi green">
+            <div class="mock-kpi-label" data-fr="Food cost" data-en="Food cost">Food cost</div>
+            <div class="mock-kpi-value">24.3%</div>
+          </div>
+          <div class="mock-kpi">
+            <div class="mock-kpi-label" data-fr="Fiches actives" data-en="Active sheets">Fiches actives</div>
+            <div class="mock-kpi-value">47</div>
+          </div>
+          <div class="mock-kpi red">
+            <div class="mock-kpi-label" data-fr="Alertes" data-en="Alerts">Alertes</div>
+            <div class="mock-kpi-value">3</div>
+          </div>
+          <div class="mock-kpi amber">
+            <div class="mock-kpi-label" data-fr="Prix modifiés" data-en="Updated prices">Prix modifiés</div>
+            <div class="mock-kpi-value">12</div>
+          </div>
+        </div>
+        <div class="mock-table">
+          <div class="mock-table-header">
+            <span data-fr="Fiches en alerte" data-en="Alerts">Fiches en alerte</span>
+            <span data-fr="Food cost > 35%" data-en="Food cost > 35%">Food cost > 35%</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-weight:500;">Blanquette de veau</span>
+            <span class="mock-badge red">38.2%</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-weight:500;">Tartare de bœuf</span>
+            <span class="mock-badge red">36.7%</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-weight:500;">Côte de bœuf</span>
+            <span class="mock-badge green">24.1%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="badge-float bottom-left">
+      <span style="font-size:16px;">🖨️</span>
+      <span style="font-size:11px;color:#71717A;" data-fr="Impression pro" data-en="Pro printing">Impression pro</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item fade-up">
+      <div class="stat-number">14<span>+</span></div>
+      <div class="stat-label" data-fr="Allergènes officiels UE" data-en="Official EU allergens">Allergènes officiels UE</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-number">2<span>x</span></div>
+      <div class="stat-label" data-fr="Cuisine & Bar séparés" data-en="Kitchen & Bar separated">Cuisine & Bar séparés</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-number">∞</div>
+      <div class="stat-label" data-fr="Établissements" data-en="Venues">Établissements</div>
+    </div>
+    <div class="stat-item fade-up">
+      <div class="stat-number">100<span>%</span></div>
+      <div class="stat-label" data-fr="Temps réel" data-en="Real time">Temps réel</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div style="max-width:600px;">
+    <div class="section-label" data-fr="Fonctionnalités" data-en="Features">Fonctionnalités</div>
+    <h2 class="section-title" data-fr="Tout ce dont votre cuisine <em>a besoin</em>" data-en="Everything your kitchen <em>needs</em>">
+      Tout ce dont votre cuisine <em>a besoin</em>
+    </h2>
+    <p class="section-desc" data-fr="Des outils pensés pour le terrain — rapides, précis et accessibles même avec les mains occupées." data-en="Tools designed for the field — fast, precise and accessible even with your hands full.">
+      Des outils pensés pour le terrain — rapides, précis et accessibles même avec les mains occupées.
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon">📊</div>
+      <h3 class="feature-title" data-fr="Dashboard KPIs" data-en="KPI Dashboard">Dashboard KPIs</h3>
+      <p class="feature-desc" data-fr="Visualisez votre food cost moyen, fiches en alerte, et variations de prix ingrédients en un coup d'œil." data-en="Visualize your average food cost, alert sheets, and ingredient price variations at a glance.">
+        Visualisez votre food cost moyen, fiches en alerte, et variations de prix ingrédients en un coup d'œil.
+      </p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">📝</div>
+      <h3 class="feature-title" data-fr="Fiches techniques" data-en="Recipe sheets">Fiches techniques</h3>
+      <p class="feature-desc" data-fr="Créez et gérez vos fiches avec photos, ingrédients, marges, allergènes et impression professionnelle A4." data-en="Create and manage your sheets with photos, ingredients, margins, allergens and professional A4 printing.">
+        Créez et gérez vos fiches avec photos, ingrédients, marges, allergènes et impression professionnelle A4.
+      </p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">💰</div>
+      <h3 class="feature-title" data-fr="Food cost temps réel" data-en="Real-time food cost">Food cost temps réel</h3>
+      <p class="feature-desc" data-fr="Chaque ingrédient mis à jour se répercute instantanément sur toutes les fiches concernées — zéro calcul manuel." data-en="Every updated ingredient instantly impacts all relevant sheets — zero manual calculation.">
+        Chaque ingrédient mis à jour se répercute instantanément sur toutes les fiches concernées — zéro calcul manuel.
+      </p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🍸</div>
+      <h3 class="feature-title" data-fr="Module Bar intégré" data-en="Integrated Bar module">Module Bar intégré</h3>
+      <p class="feature-desc" data-fr="Section Bar dédiée avec TVA alcool automatique (20%), cocktails, vins et spiritueux gérés séparément." data-en="Dedicated Bar section with automatic alcohol VAT (20%), cocktails, wines and spirits managed separately.">
+        Section Bar dédiée avec TVA alcool automatique (20%), cocktails, vins et spiritueux gérés séparément.
+      </p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">⚠️</div>
+      <h3 class="feature-title" data-fr="Allergènes officiels" data-en="Official allergens">Allergènes officiels</h3>
+      <p class="feature-desc" data-fr="Les 14 allergènes réglementaires UE intégrés. Tableau imprimable pour les cuisines et la salle." data-en="All 14 EU regulatory allergens integrated. Printable table for kitchen and dining room.">
+        Les 14 allergènes réglementaires UE intégrés. Tableau imprimable pour les cuisines et la salle.
+      </p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🏨</div>
+      <h3 class="feature-title" data-fr="Multi-établissements" data-en="Multi-venue">Multi-établissements</h3>
+      <p class="feature-desc" data-fr="Gérez plusieurs restaurants ou hôtels depuis une seule plateforme avec isolation totale des données." data-en="Manage multiple restaurants or hotels from a single platform with complete data isolation.">
+        Gérez plusieurs restaurants ou hôtels depuis une seule plateforme avec isolation totale des données.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD COST HIGHLIGHT -->
+<section class="highlight" id="foodcost">
+  <div class="highlight-inner">
+    <div class="highlight-content">
+      <div class="section-label" data-fr="Food cost" data-en="Food cost">Food cost</div>
+      <h2 class="section-title" data-fr="1% de marge, c'est <em>des milliers d'euros</em>" data-en="1% margin is <em>thousands of euros</em>">
+        1% de marge, c'est <em>des milliers d'euros</em>
+      </h2>
+      <p class="section-desc" data-fr="FT Manager calcule votre food cost à la portion, intègre le % de perte matière et vous alerte en temps réel quand une fiche dépasse vos seuils." data-en="FT Manager calculates your food cost per serving, integrates waste percentage and alerts you in real time when a sheet exceeds your thresholds.">
+        FT Manager calcule votre food cost à la portion, intègre le % de perte matière et vous alerte en temps réel quand une fiche dépasse vos seuils.
+      </p>
+      <ul class="highlight-list">
+        <li>
+          <div class="check">✓</div>
+          <span data-fr="Prix indicatif TTC calculé automatiquement selon votre seuil cible" data-en="Automatic VAT price suggestion based on your target margin">Prix indicatif TTC calculé automatiquement selon votre seuil cible</span>
+        </li>
+        <li>
+          <div class="check">✓</div>
+          <span data-fr="% de perte matière intégré (parures, épluchage, désossage)" data-en="Waste percentage integrated (trimming, peeling, boning)">% de perte matière intégré (parures, épluchage, désossage)</span>
+        </li>
+        <li>
+          <div class="check">✓</div>
+          <span data-fr="Alertes visuelles rouge/orange/vert selon vos seuils personnalisés" data-en="Red/orange/green visual alerts based on your custom thresholds">Alertes visuelles rouge/orange/vert selon vos seuils personnalisés</span>
+        </li>
+        <li>
+          <div class="check">✓</div>
+          <span data-fr="TVA automatique : 10% restauration, 20% alcool" data-en="Automatic VAT: 10% catering, 20% alcohol">TVA automatique : 10% restauration, 20% alcool</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="foodcost-visual">
+      <div class="fc-title" data-fr="Food cost par fiche — Mise à jour en temps réel" data-en="Food cost per sheet — Real-time update">Food cost par fiche — Mise à jour en temps réel</div>
+      <div class="fc-rows">
+        <div class="fc-row">
+          <span class="fc-name">Tartare de bœuf</span>
+          <div class="fc-bar-wrap"><div class="fc-bar red" style="width:78%"></div></div>
+          <span class="fc-pct red">38.5%</span>
+        </div>
+        <div class="fc-row">
+          <span class="fc-name">Sole meunière</span>
+          <div class="fc-bar-wrap"><div class="fc-bar amber" style="width:62%"></div></div>
+          <span class="fc-pct amber">31.2%</span>
+        </div>
+        <div class="fc-row">
+          <span class="fc-name">Blanquette de veau</span>
+          <div class="fc-bar-wrap"><div class="fc-bar green" style="width:52%"></div></div>
+          <span class="fc-pct green">25.8%</span>
+        </div>
+        <div class="fc-row">
+          <span class="fc-name">Salade niçoise</span>
+          <div class="fc-bar-wrap"><div class="fc-bar green" style="width:44%"></div></div>
+          <span class="fc-pct green">22.1%</span>
+        </div>
+        <div class="fc-row">
+          <span class="fc-name">Crème brûlée</span>
+          <div class="fc-bar-wrap"><div class="fc-bar green" style="width:36%"></div></div>
+          <span class="fc-pct green">18.3%</span>
+        </div>
+      </div>
+      <div class="fc-footer">
+        <div>
+          <div class="fc-avg-label" data-fr="Moyenne globale" data-en="Global average">Moyenne globale</div>
+        </div>
+        <div class="fc-avg-value">24.3%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MULTI-ETABLISSEMENTS -->
+<section class="multi-section" id="multi">
+  <div class="section-label" data-fr="Multi-établissements" data-en="Multi-venue">Multi-établissements</div>
+  <h2 class="section-title" data-fr="Une plateforme, <em>tous vos restaurants</em>" data-en="One platform, <em>all your restaurants</em>">
+    Une plateforme, <em>tous vos restaurants</em>
+  </h2>
+  <p class="section-desc" data-fr="Chaque établissement dispose de son propre espace isolé, son branding, ses modules actifs et ses équipes." data-en="Each venue has its own isolated space, branding, active modules and teams.">
+    Chaque établissement dispose de son propre espace isolé, son branding, ses modules actifs et ses équipes.
+  </p>
+  <div class="clients-grid">
+    <div class="client-card fade-up">
+      <span class="client-badge both" data-fr="Cuisine + Bar" data-en="Kitchen + Bar">Cuisine + Bar</span>
+      <div class="client-name">Hôtel La Fantaisie</div>
+      <div class="client-detail" data-fr="Paris 9ème — 5 étoiles" data-en="Paris 9th — 5 stars">Paris 9ème — 5 étoiles</div>
+      <div class="client-stats">
+        <div class="client-stat"><strong>56</strong> <span data-fr="fiches" data-en="sheets">fiches</span></div>
+        <div class="client-stat"><strong>9</strong> <span data-fr="utilisateurs" data-en="users">utilisateurs</span></div>
+      </div>
+    </div>
+    <div class="client-card fade-up">
+      <span class="client-badge cuisine" data-fr="Cuisine" data-en="Kitchen">Cuisine</span>
+      <div class="client-name">Brasserie du Marché</div>
+      <div class="client-detail" data-fr="Lyon — Brasserie traditionnelle" data-en="Lyon — Traditional brasserie">Lyon — Brasserie traditionnelle</div>
+      <div class="client-stats">
+        <div class="client-stat"><strong>34</strong> <span data-fr="fiches" data-en="sheets">fiches</span></div>
+        <div class="client-stat"><strong>4</strong> <span data-fr="utilisateurs" data-en="users">utilisateurs</span></div>
+      </div>
+    </div>
+    <div class="client-card fade-up">
+      <span class="client-badge bar" data-fr="Bar" data-en="Bar">Bar</span>
+      <div class="client-name">Le Comptoir</div>
+      <div class="client-detail" data-fr="Bordeaux — Bar à cocktails" data-en="Bordeaux — Cocktail bar">Bordeaux — Bar à cocktails</div>
+      <div class="client-stats">
+        <div class="client-stat"><strong>28</strong> <span data-fr="fiches" data-en="sheets">fiches</span></div>
+        <div class="client-stat"><strong>3</strong> <span data-fr="utilisateurs" data-en="users">utilisateurs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALLERGENES -->
+<section class="allergenes-section" id="allergenes">
+  <div class="allergenes-inner">
+    <div>
+      <div class="section-label" data-fr="Conformité réglementaire" data-en="Regulatory compliance">Conformité réglementaire</div>
+      <h2 class="section-title" data-fr="Les 14 allergènes <em>toujours à portée</em>" data-en="All 14 allergens <em>always at hand</em>">
+        Les 14 allergènes <em>toujours à portée</em>
+      </h2>
+      <p class="section-desc" data-fr="Sélectionnez les allergènes présents sur chaque fiche. Tableau récapitulatif imprimable pour affichage en salle et en cuisine." data-en="Select allergens present on each sheet. Printable summary table for display in dining room and kitchen.">
+        Sélectionnez les allergènes présents sur chaque fiche. Tableau récapitulatif imprimable pour affichage en salle et en cuisine.
+      </p>
+      <a href="https://ft-manager-five.vercel.app" class="btn-primary" style="background:var(--accent);display:inline-flex;align-items:center;gap:8px;">
+        <span data-fr="Essayer maintenant" data-en="Try now">Essayer maintenant</span>
+        <span>→</span>
+      </a>
+    </div>
+    <div class="allergene-grid">
+      <div class="allergene-chip active"><span class="emoji">🌾</span><span data-fr="Gluten" data-en="Gluten">Gluten</span></div>
+      <div class="allergene-chip active"><span class="emoji">🦐</span><span data-fr="Crustacés" data-en="Crustaceans">Crustacés</span></div>
+      <div class="allergene-chip"><span class="emoji">🥚</span><span data-fr="Œufs" data-en="Eggs">Œufs</span></div>
+      <div class="allergene-chip active"><span class="emoji">🐟</span><span data-fr="Poisson" data-en="Fish">Poisson</span></div>
+      <div class="allergene-chip"><span class="emoji">🥜</span><span data-fr="Arachides" data-en="Peanuts">Arachides</span></div>
+      <div class="allergene-chip active"><span class="emoji">🫘</span><span data-fr="Soja" data-en="Soy">Soja</span></div>
+      <div class="allergene-chip active"><span class="emoji">🥛</span><span data-fr="Lait" data-en="Milk">Lait</span></div>
+      <div class="allergene-chip"><span class="emoji">🌰</span><span data-fr="Fruits à coque" data-en="Tree nuts">F. à coque</span></div>
+      <div class="allergene-chip"><span class="emoji">🌿</span><span data-fr="Céleri" data-en="Celery">Céleri</span></div>
+      <div class="allergene-chip"><span class="emoji">🟡</span><span data-fr="Moutarde" data-en="Mustard">Moutarde</span></div>
+      <div class="allergene-chip"><span class="emoji">⚫</span><span data-fr="Sésame" data-en="Sesame">Sésame</span></div>
+      <div class="allergene-chip"><span class="emoji">🍷</span><span data-fr="Sulfites" data-en="Sulphites">Sulfites</span></div>
+      <div class="allergene-chip"><span class="emoji">🐚</span><span data-fr="Mollusques" data-en="Molluscs">Mollusques</span></div>
+      <div class="allergene-chip"><span class="emoji">🫛</span><span data-fr="Lupin" data-en="Lupin">Lupin</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="section-label" data-fr="Commencer" data-en="Get started">Commencer</div>
+  <h2 class="section-title" data-fr="Prêt à reprendre le contrôle de <em>vos marges</em> ?" data-en="Ready to take control of <em>your margins</em>?">
+    Prêt à reprendre le contrôle de <em>vos marges</em> ?
+  </h2>
+  <p class="section-desc" data-fr="FT Manager est déjà utilisé dans des hôtels et restaurants exigeants. Demandez votre accès dès aujourd'hui." data-en="FT Manager is already used in demanding hotels and restaurants. Request your access today.">
+    FT Manager est déjà utilisé dans des hôtels et restaurants exigeants. Demandez votre accès dès aujourd'hui.
+  </p>
+  <div class="cta-actions">
+    <a href="https://ft-manager-five.vercel.app" class="btn-primary" style="font-size:15px;padding:15px 32px;">
+      <span data-fr="Accéder à l'application" data-en="Access the app">Accéder à l'application</span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-icon">🍽️</div>
+    <div>
+      <div class="footer-name">FT Manager</div>
+      <div class="footer-copy" data-fr="© 2026 — Gestion des fiches techniques" data-en="© 2026 — Recipe sheet management">© 2026 — Gestion des fiches techniques</div>
+    </div>
+  </div>
+  <div class="footer-links">
+    <a href="https://ft-manager-five.vercel.app" class="footer-link" data-fr="Se connecter" data-en="Sign in">Se connecter</a>
+  </div>
+</footer>
+
+<script>
+  // Lang toggle
+  let currentLang = 'fr'
+
+  function setLang(lang) {
+    currentLang = lang
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === lang.toUpperCase())
+    })
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const text = el.getAttribute('data-' + lang)
+      if (!text) return
+      if (el.tagName === 'INPUT') {
+        el.placeholder = text
+      } else if (el.innerHTML.includes('<em>')) {
+        el.innerHTML = text
+      } else {
+        el.textContent = text
+      }
+    })
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible')
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el))
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault()
+      const target = document.querySelector(a.getAttribute('href'))
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  })
+</script>
+</body>
+</html>
